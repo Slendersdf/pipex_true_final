@@ -7,7 +7,6 @@ MANDATORY =	ft_putstr_fd.c ft_split.c ft_strlcpy.c \
 					ft_strlen.c ft_strncmp.c ft_strnstr.c \
 						ft_strtrim.c ft_substr.c ft_calloc.c \
 							ft_putchar_fd.c ft_strcmp.c \
-								get_next_line.c get_next_line_utils.c \
 
 OBJ_MANDATORY = ${MANDATORY:.c=.o}
 
