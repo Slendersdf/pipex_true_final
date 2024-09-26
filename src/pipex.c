@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 09:58:41 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 18:54:44 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:13:56 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	main(int argc, char **argv, char *envp[])
 		if (infile == -1)
 		{
 			error(argv[1], strerror(errno));
-			return (1);
+			infile = open("/dev/null", O_RDONLY);
 		}
 		outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 		if (outfile == -1)
