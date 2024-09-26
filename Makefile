@@ -6,7 +6,7 @@ LIBFT = $(LIBFT_DIRECTORY)/libft.a
 
 COMP = cc -Wall -Wextra -Werror -I ./
 
-MANDATORY = src/pipex.c src/pipex_utils.c \
+MANDATORY = src/pipex.c src/pipex_utils.c src/pipex_proc.c \
 
 OBJS = $(MANDATORY:.c=.o)
 

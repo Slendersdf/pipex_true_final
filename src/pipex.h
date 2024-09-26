@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 09:59:05 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 14:17:27 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:57:15 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	error(char *name, char *err);
 
 void	exe(char **cmd, char **envp);
 void	run(char *arg, char **envp);
-void	first_child(int fd_in, int fd_pipe[2], char *cmd, char **envp);
-void	second_child(int fd_out, int fd_pipe[2], char *cmd, char **envp);
+void	first_child(int fd_in, int *fd_pipe, char *cmd, char **envp);
+void	second_child(int fd_out, int *fd_pipe, char *cmd, char **envp);
 void	parent_process(int infile, int outfile, char **argv, char **envp);
 #endif
