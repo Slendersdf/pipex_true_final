@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:51:51 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 18:54:20 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/26 21:43:49 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 // Execute the first command
 void	first_child(int infile, int *fd_pipe, char *cmd, char **envp)
 {
+	if (infile == -1)
+		exit(1);
 	dup2(infile, 0);
 	dup2(fd_pipe[1], 1);
 	close(fd_pipe[0]);
