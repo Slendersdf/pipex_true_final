@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 09:58:41 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/25 22:05:00 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/26 14:24:12 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,63 +63,99 @@ void	run(char *arg, char **envp)
 	exit(127);
 }
 
-// Function that create a pipe between two process to execute "chained" commands
-// First, we create a pipe and fork if "infile" (fd1) exists
-// Child process //
-// Redirection of STDIN (0) to the "infile"
-// Then redirection of STDOUT (1) to the write end of the pipe
-// Finally, execution of the "first" command
-// Parent process //
-// Redirection of STDOUT (1) to the "outfile"
-// Then redirection of STDIN (0) to the read end of the pipe
-// Wait for the end of the child process
-// Finally, execution of the "second" command
-void	mk_pipe(int fd1, int fd2, char **argv, char **envp)
+// Function to handle a child process
+// Redirection of Stdin (0) to infile/read end of the pipe
+// Redirection of Stdout (1) to outfile/write end of the pipe
+// Close write/read end of the pipe (child side)
+// Execute the command
+// Close infile and outfile since they are no useful anymore (child side)
+void	first_child(int fd_in, int fd_pipe[2], char *cmd, char **envp)
 {
-	int		fd[2];
-	int		id;
+	// Rediriger stdin vers infile
+	dup2(fd_in, 0);
 
-	id = 1;
-	pipe(fd);
-	if (fd1 != -1)
-		id = fork();
-	if (id == 0)
-	{
-		dup2(fd1, 0);
-		close(fd[0]);
-		dup2(fd[1], 1);
-		run(argv[2], envp);
-		close(fd1);
-	}
-	else
-	{
-		dup2(fd2, 1);
-		close(fd[1]);
-		dup2(fd[0], 0);
-		wait(NULL);
-		run(argv[3], envp);
-		close(fd2);
-	}
+	// Rediriger stdout vers l'extrémité d'écriture du pipe
+	dup2(fd_pipe[1], 1);
+
+	// Fermer les descripteurs inutilisés
+	close(fd_pipe[0]);  // Fermer l'extrémité de lecture du pipe
+	close(fd_pipe[1]);
+	close(fd_in);
+
+	// Exécuter la commande
+	run(cmd, envp);
+
+	// En cas d'échec de la commande
+	exit(1);
+}
+
+void	second_child(int fd_out, int fd_pipe[2], char *cmd, char **envp)
+{
+	// Rediriger stdin vers l'extrémité de lecture du pipe
+	dup2(fd_pipe[0], 0);
+
+	// Rediriger stdout vers outfile
+	dup2(fd_out, 1);
+
+	// Fermer les descripteurs inutilisés
+	close(fd_pipe[0]);
+	close(fd_pipe[1]);
+	close(fd_out);
+
+	// Exécuter la commande
+	run(cmd, envp);
+
+	// En cas d'échec de la commande
+	exit(1);
+}
+
+
+// Function to create a pipe and handle both of childs process
+void	parent_process(int infile, int outfile, char **argv, char **envp)
+{
+	int	fd_pipe[2];
+	int	id1;
+	int	id2;
+
+	id1 = 0;
+	id2 = 0;
+	pipe(fd_pipe);
+	id1 = fork();
+	if (id1 == 0)
+		first_child(infile, fd_pipe, argv[2], envp);
+	id2 = fork();
+	if (id2 == 0)
+		second_child(outfile, fd_pipe, argv[3], envp);
+	close(fd_pipe[0]);
+	close(fd_pipe[1]);
+	close(infile);
+	close(outfile);
+	waitpid(id1, NULL, 0);
+	waitpid(id2, NULL, 0);
 }
 
 // Main function, pretty obvious XD
 int	main(int argc, char **argv, char *envp[])
 {
-	int	file1;
-	int	file2;
+	int	infile;
+	int	outfile;
 
 	if (argc == 5)
 	{
-		file1 = open(argv[1], O_RDONLY);
-		if (file1 == -1)
+		infile = open(argv[1], O_RDONLY);
+		if (infile == -1)
+		{
 			error(argv[1], strerror(errno));
-		file2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0664);
-		if (file2 == -1)
+			return (1);
+		}
+		outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+		if (outfile == -1)
 		{
 			error(argv[4], strerror(errno));
 			return (1);
 		}
-		mk_pipe(file1, file2, argv, envp);
+		parent_process(infile, outfile, argv, envp);
+		return (0);
 	}
 	ft_putstr_fd("Incorrect format! Try this format : ./pipex file1 cmd1 cmd2 file2\n", 2);
 	return (1);
