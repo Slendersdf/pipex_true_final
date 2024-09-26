@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 09:58:41 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 17:05:47 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:54:44 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,31 @@ void	exe(char **cmd, char **envp)
 }
 
 // Function that execute the command by dividing it in multiple args
-// If arg is not empty, then it shall be divided in multiple part
+// If arg is not empty or not composed of whitespaces,
+// then it shall be divided in multiple part
 // Then we execute the command (exe function) and free cmd if it fails
 // Else, in the case of empty arg (""), we send a specific error message
 void	run(char *arg, char **envp)
 {
 	char	**cmd;
 	int		i;
+	char	*trimmed;
 
 	i = 0;
-	if (*arg)
+	trimmed = ft_strtrim(arg, " \t\n\f\r\v");
+	if (*arg && trimmed[0] != '\0')
 	{
 		cmd = ft_split(arg, ' ');
 		exe(cmd, envp);
 		while (cmd[i])
 			free(cmd[i++]);
 		free(cmd);
+		free(trimmed);
 	}
 	else
 	{
 		error("", "command not found");
+		free(trimmed);
 	}
 	exit(127);
 }
