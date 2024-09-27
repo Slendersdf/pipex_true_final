@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 16:51:51 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 21:43:49 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/27 10:33:20 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // Redirection of Stdout (1) to the write end of the pipe
 // Close unutilized fd
 // Execute the first command
-void	first_child(int infile, int *fd_pipe, char *cmd, char **envp)
+void	first_child(int infile, int *fd_pipe, char *cmd, char **env)
 {
 	if (infile == -1)
 		exit(1);
@@ -26,7 +26,7 @@ void	first_child(int infile, int *fd_pipe, char *cmd, char **envp)
 	close(fd_pipe[0]);
 	close(fd_pipe[1]);
 	close(infile);
-	run(cmd, envp);
+	run(cmd, env);
 }
 
 // Function that handle the second child process
@@ -34,18 +34,18 @@ void	first_child(int infile, int *fd_pipe, char *cmd, char **envp)
 // Redirection of Stdout to outfile
 // Close unutilized fd
 // Execute the second (last) command
-void	second_child(int outfile, int *fd_pipe, char *cmd, char **envp)
+void	second_child(int outfile, int *fd_pipe, char *cmd, char **env)
 {
 	dup2(fd_pipe[0], 0);
 	dup2(outfile, 1);
 	close(fd_pipe[0]);
 	close(fd_pipe[1]);
 	close(outfile);
-	run(cmd, envp);
+	run(cmd, env);
 }
 
 // Function to create a pipe and handle both of childs process
-void	parent_process(int infile, int outfile, char **argv, char **envp)
+void	parent_process(int infile, int outfile, char **av, char **env)
 {
 	int	fd_pipe[2];
 	int	id1;
@@ -56,10 +56,10 @@ void	parent_process(int infile, int outfile, char **argv, char **envp)
 	pipe(fd_pipe);
 	id1 = fork();
 	if (id1 == 0)
-		first_child(infile, fd_pipe, argv[2], envp);
+		first_child(infile, fd_pipe, av[2], env);
 	id2 = fork();
 	if (id2 == 0)
-		second_child(outfile, fd_pipe, argv[3], envp);
+		second_child(outfile, fd_pipe, av[3], env);
 	close(fd_pipe[0]);
 	close(fd_pipe[1]);
 	close(infile);

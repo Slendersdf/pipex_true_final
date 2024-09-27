@@ -6,11 +6,21 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 10:00:04 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 17:06:54 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:18:54 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+// A simple function to display an error message
+void	error(char *name, char *err)
+{
+	ft_putstr_fd("pipex: ", 2);
+	ft_putstr_fd(name, 2);
+	ft_putstr_fd(": ", 2);
+	ft_putstr_fd(err, 2);
+	ft_putstr_fd("\n", 2);
+}
 
 // Function to create a complete path from a part of PATH
 // And add the command to it
@@ -41,7 +51,7 @@ char	*parse_path(char *path, char *arg)
 }
 
 // Function to find the complete path of a command, by using the env PATH
-char	*get_path(char **envp, char *arg)
+char	*get_path(char **env, char *arg)
 {
 	int		i;
 	char	*path;
@@ -49,16 +59,16 @@ char	*get_path(char **envp, char *arg)
 
 	i = 0;
 	path = NULL;
-	while (envp[i] && ft_strncmp("PATH=", envp[i], 5))
+	while (env[i] && ft_strncmp("PATH=", env[i], 5))
 		i++;
-	if (!envp[i])
+	if (!env[i])
 		return (arg);
-	path = envp[i] + 5;
+	path = env[i] + 5;
 	while (*path)
 	{
-		if (path == envp[i] + 5 || *path == ':')
+		if (path == env[i] + 5 || *path == ':')
 		{
-			exe = parse_path(path + !(path == envp[i] + 5), arg);
+			exe = parse_path(path + !(path == env[i] + 5), arg);
 			if (access(exe, F_OK) == 0)
 				return (exe);
 			free(exe);
@@ -66,14 +76,4 @@ char	*get_path(char **envp, char *arg)
 		path++;
 	}
 	return (arg);
-}
-
-// A simple function to display an error message
-void	error(char *name, char *err)
-{
-	ft_putstr_fd("pipex: ", 2);
-	ft_putstr_fd(name, 2);
-	ft_putstr_fd(": ", 2);
-	ft_putstr_fd(err, 2);
-	ft_putstr_fd("\n", 2);
 }

@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 09:58:41 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 21:40:36 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:23:02 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 // ELSE, in the case of "/" (so absolute or relative path probably)
 // check if the file is executable, if it is then execute the command
 // else, send a system error message
-void	exe(char **cmd, char **envp)
+void	exe(char **cmd, char **env)
 {
 	char	*path;
 
 	if (!ft_strchr(cmd[0], '/'))
 	{
-		path = get_path(envp, cmd[0]);
-		execve(path, cmd, envp);
+		path = get_path(env, cmd[0]);
+		execve(path, cmd, env);
 		error(cmd[0], "command not found");
 	}
 	else
@@ -34,7 +34,7 @@ void	exe(char **cmd, char **envp)
 		if (access(path, X_OK) != 0)
 			error(path, strerror(errno));
 		else
-			execve(path, cmd, envp);
+			execve(path, cmd, env);
 	}
 }
 
@@ -43,7 +43,7 @@ void	exe(char **cmd, char **envp)
 // then it shall be divided in multiple part
 // Then we execute the command (exe function) and free cmd if it fails
 // Else, in the case of empty arg (""), we send a specific error message
-void	run(char *arg, char **envp)
+void	run(char *arg, char **env)
 {
 	char	**cmd;
 	int		i;
@@ -54,7 +54,7 @@ void	run(char *arg, char **envp)
 	if (*arg && trimmed[0] != '\0')
 	{
 		cmd = ft_split(arg, ' ');
-		exe(cmd, envp);
+		exe(cmd, env);
 		while (cmd[i])
 			free(cmd[i++]);
 		free(cmd);
@@ -69,26 +69,26 @@ void	run(char *arg, char **envp)
 }
 
 // Main function, pretty obvious XD
-int	main(int argc, char **argv, char *envp[])
+int	main(int ac, char **av, char *env[])
 {
 	int	infile;
 	int	outfile;
 
-	if (argc == 5)
+	if (ac == 5)
 	{
-		infile = open(argv[1], O_RDONLY);
+		infile = open(av[1], O_RDONLY);
 		if (infile == -1)
-			error(argv[1], strerror(errno));
-		outfile = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+			error(av[1], strerror(errno));
+		outfile = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 		if (outfile == -1)
 		{
-			error(argv[4], strerror(errno));
+			error(av[4], strerror(errno));
 			return (1);
 		}
-		parent_process(infile, outfile, argv, envp);
+		parent_process(infile, outfile, av, env);
 		return (0);
 	}
 	ft_putstr_fd("Incorrect format! ", 2);
-	ft_putstr_fd("Try this format : ./pipex file1 cmd1 cmd2 file2\n", 2);
+	ft_putstr_fd("Try this one: ./pipex file1 cmd1 cmd2 file2\n", 2);
 	return (1);
 }

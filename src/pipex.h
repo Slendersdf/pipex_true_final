@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 09:59:05 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/09/26 16:57:15 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/09/27 11:20:38 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@
 # include <errno.h>
 # include <string.h>
 
-char	*get_path(char **envp, char *arg);
+//pipex.c
+void	exe(char **cmd, char **env);
+void	run(char *arg, char **env);
+//pipex_proc.c
+void	first_child(int fd_in, int *fd_pipe, char *cmd, char **env);
+void	second_child(int fd_out, int *fd_pipe, char *cmd, char **env);
+void	parent_process(int infile, int outfile, char **av, char **env);
+//pipex_utils.c
+char	*get_path(char **env, char *arg);
 char	*parse_path(char *path, char *arg);
 void	error(char *name, char *err);
-
-void	exe(char **cmd, char **envp);
-void	run(char *arg, char **envp);
-void	first_child(int fd_in, int *fd_pipe, char *cmd, char **envp);
-void	second_child(int fd_out, int *fd_pipe, char *cmd, char **envp);
-void	parent_process(int infile, int outfile, char **argv, char **envp);
 #endif
