@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:35:46 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/15 15:36:39 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:23:54 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,16 @@
 # include <errno.h>
 # include <string.h>
 
-//pipex.c
+//pipex_bonus.c
 void	exe(char **cmd, char **env);
 void	run(char *arg, char **env);
-//pipex_proc.c
+//pipex_here_doc.c
+void	handle_here_doc(char *limiter, char **av, char **env, int outfile);
+//pipex_proc_bonus.c
+void	second_child(int outfile, int *fd_pipe, char *cmd, char **env);
 void 	child_process(int infile, int outfile, char *cmd, char **env);
 void	parent_process(int infile, int outfile, char **av, char **env, int ac);
-//pipex_utils.c
+//pipex_utils_bonus.c
 char	*get_path(char **env, char *arg);
 char	*parse_path(char *path, char *arg);
 void	error(char *name, char *err);

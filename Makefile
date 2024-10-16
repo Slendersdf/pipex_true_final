@@ -10,7 +10,7 @@ COMP = cc -Wall -Wextra -Werror -I ./
 
 MANDATORY = src/pipex.c src/pipex_utils.c src/pipex_proc.c \
 
-BONUS = src_bonus/pipex_bonus.c src_bonus/pipex_proc_bonus.c src_bonus/pipex_utils_bonus.c \
+BONUS = src_bonus/pipex_bonus.c src_bonus/pipex_proc_bonus.c src_bonus/pipex_utils_bonus.c src_bonus/pipex_here_doc.c \
 
 OBJS = $(MANDATORY:.c=.o)
 

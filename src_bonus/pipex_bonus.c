@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:38 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/15 15:39:07 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:21:44 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,23 @@ int	main(int ac, char **av, char *env[])
 	int	infile;
 	int	outfile;
 
-	if (ac >= 5)
+	if (ac >= 5 && ft_strcmp(av[1], "here_doc") == 0)
+	{
+		if (ac < 6)
+		{
+			ft_putstr_fd("Correct format: ./pipex here_doc LIMITER cmd cmd1 outfile\n", 2);
+			return (1);
+		}
+		outfile = open(av[ac -1], O_CREAT | O_WRONLY | O_APPEND, 0664);
+		if (outfile == -1)
+		{
+			error(av[ac - 1], strerror(errno));
+			return (1);
+		}
+		handle_here_doc(av[2], av, env, outfile);
+		return (0);
+	}
+	else if (ac >= 5)
 	{
 		infile = open(av[1], O_RDONLY);
 		if (infile == -1)

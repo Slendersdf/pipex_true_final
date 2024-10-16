@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:43 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/15 15:42:33 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:16:29 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,21 @@ void	child_process(int fd_in, int fd_out, char *cmd, char **env)
 	dup2(fd_out, 1);
 	close(fd_in);
 	close(fd_out);
+	run(cmd, env);
+}
+
+// Function that handle the second child process
+// Redirection of Stdin to the read end of the pipe
+// Redirection of Stdout to outfile
+// Close unutilized fd
+// Execute the second (last) command
+void	second_child(int outfile, int *fd_pipe, char *cmd, char **env)
+{
+	dup2(fd_pipe[0], 0);
+	dup2(outfile, 1);
+	close(fd_pipe[0]);
+	close(fd_pipe[1]);
+	close(outfile);
 	run(cmd, env);
 }
 
