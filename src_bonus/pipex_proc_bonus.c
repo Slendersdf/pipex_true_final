@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:43 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/16 15:16:29 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:27:04 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	parent_process(int infile, int outfile, char **av, char **env, int ac)
 		}
 		i++;
 	}
-	// Last command
 	pid = fork();
 	if (pid == 0)
 		child_process(fd_in, outfile, av[i], env);

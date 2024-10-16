@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:22:08 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/16 15:55:23 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/16 17:26:45 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,5 @@ void	handle_here_doc(char *limiter, char **av, char **env, int outfile)
 		wait(NULL);
 		waitpid(id, NULL, 0);
 	}
+	// HAVE TO CUT IT IN MULTIPLE FUNCTIONS
 }
