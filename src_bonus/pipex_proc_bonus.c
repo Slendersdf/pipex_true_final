@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:43 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/16 17:27:04 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:24:06 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,20 @@ void	child_process(int fd_in, int fd_out, char *cmd, char **env)
 	run(cmd, env);
 }
 
-// Function that handle the second child process
-// Redirection of Stdin to the read end of the pipe
-// Redirection of Stdout to outfile
-// Close unutilized fd
-// Execute the second (last) command
-void	second_child(int outfile, int *fd_pipe, char *cmd, char **env)
-{
-	dup2(fd_pipe[0], 0);
-	dup2(outfile, 1);
-	close(fd_pipe[0]);
-	close(fd_pipe[1]);
-	close(outfile);
-	run(cmd, env);
-}
-
 // Function to handle all the procs, including the parent one
+// Loop to execute each command except the last one (so we stop at ac - 2)
+// Create pipe at each
+// Fork each child
+// If child proc is created
+// it closes pipe read end
+// redirect STDIN and STDOUT and execute cmd (child_process())
+// If it's parent process then it closes write end of the pipe
+// close actual entry (fd_in)
+// and tranfer a new one to the write end of the pipe
+// to use it as a new entry for the next cmd
+// And we repeat the process for each child process
+// After the loop, the final process (the "last" one) is created
+// to execute the last cmd then we wait for it to finish
 void	parent_process(int infile, int outfile, char **av, char **env, int ac)
 {
 	int	fd_pipe[2];
