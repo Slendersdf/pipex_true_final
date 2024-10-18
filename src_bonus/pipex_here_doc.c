@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 15:22:08 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/18 16:01:23 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:32:22 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	handle_here_doc(char *limiter, char **av, char **env, int outfile)
 			ft_putstr_fd("heredoc> ", 1);
 			line = get_next_line(0);
 			if (!line || (ft_strncmp(line, limiter, limiter_len) == 0 && line[limiter_len] == '\n'))
-				break;
+				break ;
 			write(fd_pipe[1], line, ft_strlen(line));
 			free(line);
 		}
@@ -82,5 +82,5 @@ void	handle_here_doc(char *limiter, char **av, char **env, int outfile)
 		wait(NULL);
 		waitpid(id, NULL, 0);
 	}
-	// HAVE TO CUT IT IN MULTIPLE FUNCTIONS
+	// I HAVE TO CUT IT IN TWO LOGICAL FUNCTIONS, TO MAKE IT LESS LONG
 }

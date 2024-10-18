@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:43 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/18 16:14:05 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:29:09 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void	process_commands(int fd_in, char **av, char **env, int ac)
 
 void	last_process(int fd_in, char **av, char **env, int ac)
 {
-	int pid;
-	int outfile;
+	int	pid;
+	int	outfile;
 
 	outfile = open(av[ac - 1], O_CREAT | O_WRONLY | O_TRUNC, 0664);
 	if (outfile == -1)

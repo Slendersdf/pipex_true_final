@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:38 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/18 16:15:02 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:30:45 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,5 @@ int	main(int ac, char **av, char *env[])
 	ft_putstr_fd("Incorrect format! ", 2);
 	ft_putstr_fd("Try this one: ./pipex file1 cmd1 cmd2 ... file2\n", 2);
 	return (1);
-	// HAVE TO CUT IT IN MULTIPLE FUNCTIONS
+	// I HAVE TO CUT IT IN TWO LOGICAL FUNCTIONS, TO MAKE IT LESS LONG
 }
