@@ -10,3 +10,6 @@
 -	[x] ***Main part***
 -	[ ] ***Norminette***
 -	[ ] ***Comments***
+<br />
+
+![own_pipex](./own_pipex.jpg)
