@@ -6,7 +6,7 @@
 /*   By: fpaulas- <fpaulas-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 14:39:38 by fpaulas-          #+#    #+#             */
-/*   Updated: 2024/10/16 17:27:13 by fpaulas-         ###   ########.fr       */
+/*   Updated: 2024/10/18 16:15:02 by fpaulas-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int	main(int ac, char **av, char *env[])
 			error(av[ac - 1], strerror(errno));
 			return (1);
 		}
-		parent_process(infile, outfile, av, env, ac);
+		parent_process(infile, av, env, ac);
 		return (0);
 	}
 	ft_putstr_fd("Incorrect format! ", 2);
