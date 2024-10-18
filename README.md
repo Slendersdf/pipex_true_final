@@ -12,4 +12,4 @@
 -	[ ] ***Comments***
 <br />
 
-![own_pipex](./own_pipex.jpg)
+![new_pipex_image](./new_pipex.jpg)
