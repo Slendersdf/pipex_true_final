@@ -27,7 +27,7 @@ void	handle_here_doc(char *limiter, char **av, char **env, int outfile)
 	// one for here_doc and the other for cmds
 	limiter_len = ft_strlen(limiter);
 	if (pipe(fd_pipe) == -1 || pipe(fd_pipe_cmd) == -1)
-		error("pipe", strerror(errno));
+		exit(1);
 	// CHILD //
 	// A child proc is created to capture input (in here_doc)
 	// It displays a prompt here_doc to let the user write code
