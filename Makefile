@@ -1,19 +1,14 @@
 NAME = pipex
-
 NAME_BONUS = pipex_bonus
 
 LIBFT_DIRECTORY = libft
-
 LIBFT = $(LIBFT_DIRECTORY)/libft.a
-
 COMP = cc -Wall -Wextra -Werror -I ./
 
-MANDATORY = src/pipex.c src/pipex_utils.c src/pipex_proc.c \
-
-BONUS = src_bonus/pipex_bonus.c src_bonus/pipex_proc_bonus.c src_bonus/pipex_utils_bonus.c src_bonus/pipex_here_doc.c \
+MANDATORY = src/pipex.c src/pipex_utils.c src/pipex_proc.c
+BONUS = src_bonus/pipex_bonus.c src_bonus/pipex_proc_bonus.c src_bonus/pipex_utils_bonus.c src_bonus/pipex_here_doc.c
 
 OBJS = $(MANDATORY:.c=.o)
-
 OBJS_BONUS = $(BONUS:.c=.o)
 
 %.o: %.c
@@ -27,8 +22,10 @@ $(LIBFT):
 $(NAME): $(OBJS) $(LIBFT)
 	$(COMP) $(OBJS) $(LIBFT) -o $(NAME)
 
-bonus: $(OBJS_BONUS) $(LIBFT)
+$(NAME_BONUS): $(OBJS_BONUS) $(LIBFT)
 	$(COMP) $(OBJS_BONUS) $(LIBFT) -o $(NAME_BONUS)
+
+bonus: $(LIBFT) $(NAME_BONUS)
 
 clean:
 	make clean -C $(LIBFT_DIRECTORY)
@@ -44,4 +41,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re
